@@ -3,15 +3,38 @@
 import json
 import struct
 
-f=open("journal.out","r")
-for a in f.readlines():
-	b=json.loads(a)
-	t=b['__REALTIME_TIMESTAMP']
-	if '_SYSTEMD_UNIT' in b.keys():
-		u=b['_SYSTEMD_UNIT']
-	else:
-		u=""
+def header(outfile):
+	hdr=struct.pack("IHHIIII", 0xa1b2c3d4,2,4,0,0,0xffff,1)
+	outfile.write(hdr)
 
-	c="%s.%s %20.20s %s"%(t[0:9],t[-6:],u,b['MESSAGE'])
-	print str(c)
+def convert(infile, outfile):
+	fin=open(infile,"r")
+	fout=open(outfile,"w")
 
+	ehdr=struct.pack("6s6sH", '\xcc'*6, '\xbb'*6, 0xff7d)
+	header(fout)
+	for a in fin.readlines():
+		b=json.loads(a)
+		t=b['__REALTIME_TIMESTAMP']
+		if '_SYSTEMD_UNIT' in b.keys():
+			u=b['_SYSTEMD_UNIT']
+		else:
+			u="none"
+
+		tss=int(t[0:9])
+		tsu=int(t[-6:])
+		unit="%-20.20s"%(str(u))
+		log=str(b['MESSAGE'])
+		#print log
+		##print str(u),len(u),len(str(u)),len(log)
+		mesg=struct.pack("20s H",str(u),len(log))+log
+		mlen=len(mesg)+len(ehdr)
+		rec=struct.pack("IIII",tss,tsu,mlen,mlen)
+		fout.write(rec)
+		fout.write(ehdr)
+		fout.write(mesg)
+
+	fin.close()
+	fout.close()
+
+convert("journal-amp.txt", "journal-amp.pcap")
