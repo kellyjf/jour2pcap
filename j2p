@@ -1,0 +1,17 @@
+#! /usr/bin/python
+
+import json
+import struct
+
+f=open("journal.out","r")
+for a in f.readlines():
+	b=json.loads(a)
+	t=b['__REALTIME_TIMESTAMP']
+	if '_SYSTEMD_UNIT' in b.keys():
+		u=b['_SYSTEMD_UNIT']
+	else:
+		u=""
+
+	c="%s.%s %20.20s %s"%(t[0:9],t[-6:],u,b['MESSAGE'])
+	print str(c)
+
