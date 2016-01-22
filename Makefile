@@ -1,14 +1,18 @@
 
-ifeq($(BORG),)
-BORG:=jaguar-1
+ifeq ($(BORG),)
+BORG := jaguar-1
 endif
 
 TESTS := tm atg amp hd710
-MCAPS = $(foreach m,$(TESTS),merge-$(m).pcap)
-JCAPS = $(foreach m,$(TESTS),journal-$(m).pcap)
-SCAPS = sharness-tm-tm.pcap $(foreach m,$(TESTS),sharness-$(m).pcap)
-JTXTS = $(foreach m,$(TESTS),journal-$(m).txt)
-JLOGS= $(foreach m,$(TESTS),journal-$(m).json)
+FTESTS := full $(TESTS)
+
+MCAPS = $(foreach m,$(FTESTS),merge-$(m).pcap)
+JCAPS = $(foreach m,$(FTESTS),journal-$(m).pcap)
+JTXTS = $(foreach m,$(FTESTS),journal-$(m).txt)
+JLOGS= $(foreach m,$(FTESTS),journal-$(m).json)
+
+SCAPS = $(foreach m,$(TESTS),sharness-$(m).pcap)
+
 
 all : $(MCAPS) $(JTXTS)
 
@@ -18,14 +22,17 @@ $(JLOGS) $(SCAPS):
 $(JCAPS) : journal-%.pcap : journal-%.json
 	./j2p journal-$*.json
 
+sharness-full.pcap : $(JCAPS)
+	mergecap -w $@ $(JCAPS)
+
 $(JTXTS) : journal-%.txt: journal-%.json
 	./j2t journal-$*.json
 
 merge-%.pcap : journal-%.pcap sharness-%.pcap
-	mergecap -w *-$*.pcap $<
+	mergecap -w $@ *-$*.pcap
 
 clean:
-	rm -f $(MCAPS) $(JCAPS) $(JTXTS)
+	rm -f $(MCAPS) $(JCAPS) $(JTXTS) sharness-full.pcap
 
 reset: clean
 	rm -f $(SCAPS) $(JLOGS)
