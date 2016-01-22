@@ -174,7 +174,7 @@
 
 # Packet list hidden columns
 # List all columns to hide in the packet list.
-gui.column.hidden: %Cus:eth.src:0:R,%Cus:eth.dst:0:R,%Cus:sysng.hostname:0:R,%Cus:udp.srcport:0:R,%Cus:udp.srcport:0:R,%nd,%Cus:udp.dstport:0:R,%Cus:udp.dstport:0:R,%L,%Cus:rtp.p_type:0:R,%Cus:rtp.ssrc:0:R,%Cus:rtp.seq:0:R,%Cus:sysng.src:0:R,%Cus:sysng.len:0:R,%Cus:gpak.call.apinum:0:R,%Cus:gpak.call.channel:0:R
+gui.column.hidden: %Cus:eth.src:0:R,%Cus:eth.dst:0:R,%Cus:sysng.hostname:0:R,%Cus:udp.srcport:0:R,%Cus:udp.srcport:0:R,%Cus:udp.srcport:0:R,%nd,%Cus:udp.dstport:0:R,%Cus:udp.dstport:0:R,%L,%Cus:rtp.p_type:0:R,%Cus:rtp.ssrc:0:R,%Cus:rtp.seq:0:R,%Cus:sysng.src:0:R,%Cus:sysng.len:0:R,%Cus:gpak.call.apinum:0:R,%Cus:gpak.call.channel:0:R,%Cus:udp.dstport:0:R
 
 # Packet list column format
 # Each pair of strings consists of a column title and its format
@@ -244,26 +244,29 @@ gui.filter_expressions.label: UDP
 gui.filter_expressions.enabled: FALSE
 gui.filter_expressions.expr: udp
 gui.filter_expressions.label: RTP
-gui.filter_expressions.enabled: TRUE
+gui.filter_expressions.enabled: FALSE
 gui.filter_expressions.expr: rtp
 gui.filter_expressions.label: VoIP
-gui.filter_expressions.enabled: TRUE
+gui.filter_expressions.enabled: FALSE
 gui.filter_expressions.expr: sip or rtp
+gui.filter_expressions.label: Journal
+gui.filter_expressions.enabled: TRUE
+gui.filter_expressions.expr: sysng
 gui.filter_expressions.label: Sharness
 gui.filter_expressions.enabled: TRUE
 gui.filter_expressions.expr: sysng.ident=="sharness"
 gui.filter_expressions.label: DNS
 gui.filter_expressions.enabled: TRUE
-gui.filter_expressions.expr: dns
-gui.filter_expressions.label: AMP-Test
+gui.filter_expressions.expr: dns or sysng.ident=="sharness" or sysng.ident=="named" 
+gui.filter_expressions.label: DHCP
 gui.filter_expressions.enabled: TRUE
-gui.filter_expressions.expr: sysng.ident=="sharness" or sysng.ident=="ampd" or udp.port==4000 or (tcp.port==4000 and tcp.len>100)
+gui.filter_expressions.expr: bootp or sysng.ident=="sharness" or sysng.ident[0:2]=="dhc"
 gui.filter_expressions.label: AMP
 gui.filter_expressions.enabled: TRUE
-gui.filter_expressions.expr: udp.port==4000 or (tcp.port==4000 && tcp.len>100)
-gui.filter_expressions.label: Journal
+gui.filter_expressions.expr: sysng.ident=="sharness" or sysng.ident=="ampd" or udp.port==4000 or (tcp.port==4000 and tcp.len>100)
+gui.filter_expressions.label: ICMP
 gui.filter_expressions.enabled: TRUE
-gui.filter_expressions.expr: sysng
+gui.filter_expressions.expr: sysng.ident=="sharness" or sysng.service contains "bearer" or icmp
 
 ####### Capture ########
 

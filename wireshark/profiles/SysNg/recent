@@ -63,7 +63,7 @@ gui.bytes_view: 0
 
 # Main window upper (or leftmost) pane size.
 # Decimal number.
-gui.geometry_main_upper_pane: 285
+gui.geometry_main_upper_pane: 314
 
 # Main window middle pane size.
 # Decimal number.
@@ -71,7 +71,7 @@ gui.geometry_main_lower_pane: 763
 
 # Packet list column pixel widths.
 # Each pair of strings consists of a column format and its pixel width.
-column.width: %m, 56, %t, 154, %Cus:eth.src, 178, %Cus:eth.dst, 149, %Gt, 77, %p, 75, %Cus:sysng.ident, 100, %Cus:sysng.service, 100, %Cus:vlan.id, 46:L, %Cus:sysng.hostname, 181, %ns, 209, %Cus:udp.srcport, 66:L, %Cus:udp.srcport, 66:L, %Cus:udp.srcport, 66:L, %nd, 110, %Cus:udp.dstport, 121:L, %Cus:udp.dstport, 121:L, %L, 58, %Cus:rtp.p_type, 100, %Cus:rtp.ssrc, 100, %Cus:rtp.seq, 100, %Cus:sysng.src, 90, %Cus:sysng.len, 58:R, %Cus:gpak.call.apinum, 197, %Cus:gpak.call.channel, 84, %Cus:ip.dst, 124, %Cus:udp.dstport, 121:L, %i, 872
+column.width: %m, 56, %t, 154, %Cus:eth.src, 178, %Cus:eth.dst, 149, %Gt, 77, %p, 75, %Cus:sysng.ident, 100, %Cus:sysng.service, 156, %Cus:vlan.id, 46:L, %Cus:sysng.hostname, 181, %ns, 108, %Cus:udp.srcport, 66:L, %Cus:udp.srcport, 66:L, %Cus:udp.srcport, 66:L, %nd, 110, %Cus:udp.dstport, 121:L, %Cus:udp.dstport, 121:L, %L, 58, %Cus:rtp.p_type, 100, %Cus:rtp.ssrc, 100, %Cus:rtp.seq, 100, %Cus:sysng.src, 90, %Cus:sysng.len, 58:R, %Cus:gpak.call.apinum, 197, %Cus:gpak.call.channel, 84, %Cus:ip.dst, 124, %Cus:udp.dstport, 121:L, %i, 872
 
 # Last directory navigated to in File Open dialog.
 gui.fileopen_remembered_dir: /home/jkelly/logs/160121/jour2pcap/

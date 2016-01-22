@@ -22,8 +22,8 @@ $(JLOGS) $(SCAPS):
 $(JCAPS) : journal-%.pcap : journal-%.json
 	./j2p journal-$*.json
 
-sharness-full.pcap : $(JCAPS)
-	mergecap -w $@ $(JCAPS)
+sharness-full.pcap : $(SCAPS)
+	mergecap -w $@ $(SCAPS)
 
 $(JTXTS) : journal-%.txt: journal-%.json
 	./j2t journal-$*.json
