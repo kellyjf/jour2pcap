@@ -1,31 +1,33 @@
 
-TESTS := atg amp hd710
-PCAPS = $(foreach m,$(TESTS),merge-$(m).pcap)
+ifeq($(BORG),)
+BORG:=jaguar-1
+endif
+
+TESTS := tm atg amp hd710
+MCAPS = $(foreach m,$(TESTS),merge-$(m).pcap)
 JCAPS = $(foreach m,$(TESTS),journal-$(m).pcap)
-SCAPS = $(foreach m,$(TESTS),sharness-$(m).pcap)
-JTXT = $(foreach m,$(TESTS),journal-$(m).txt)
+SCAPS = sharness-tm-tm.pcap $(foreach m,$(TESTS),sharness-$(m).pcap)
+JTXTS = $(foreach m,$(TESTS),journal-$(m).txt)
+JLOGS= $(foreach m,$(TESTS),journal-$(m).json)
 
-all : $(PCAPS)
+all : $(MCAPS) $(JTXTS)
 
-test:
-	echo $(PCAPS)
+$(JLOGS) $(SCAPS):
+	scp root@$(BORG):/var/log/jaguar/$@ .
 
+$(JCAPS) : journal-%.pcap : journal-%.json
+	./j2p journal-$*.json
 
-$(JTXT) $(SCAPS):
-	scp root@jaguar-1:/var/log/jaguar/$@ .
-
-
-
-$(JCAPS) : journal-%.pcap : journal-%.txt
-	./j2p journal-$*.txt
+$(JTXTS) : journal-%.txt: journal-%.json
+	./j2t journal-$*.json
 
 merge-%.pcap : journal-%.pcap sharness-%.pcap
-	mergecap -w $@ $<
+	mergecap -w *-$*.pcap $<
 
 clean:
-	rm -f $(PCAPS) $(JCAPS)
+	rm -f $(MCAPS) $(JCAPS) $(JTXTS)
 
 reset: clean
-	rm -f $(SCAPS) $(JTXT)
+	rm -f $(SCAPS) $(JLOGS)
 
 

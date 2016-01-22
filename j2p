@@ -47,7 +47,7 @@ if __name__ == "__main__":
 	parser.add_argument('file', nargs='+', help="'journalctl -o json' output file")
 	args=parser.parse_args()
 	inputs=args.file
-	outputs=["%s.pcap"%(x.replace('.txt','')) for x in inputs] 
+	outputs=["%s.pcap"%(x.replace('.json','')) for x in inputs] 
 	for (x,y) in zip(inputs,outputs):
 		convert(x,y)
 	
